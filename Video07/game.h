@@ -2,10 +2,8 @@
 #define GAME_H
 
 #include "flake.h"
-#include "fps.h"
 #include "main.h"
 #include "player.h"
-#include "score.h"
 
 class Game {
     public:
@@ -23,7 +21,6 @@ class Game {
 
     private:
         void collision(std::unique_ptr<Flake> &flake);
-        void toggle_mute();
         void events();
         void update();
         void draw();
@@ -40,12 +37,6 @@ class Game {
         std::random_device rd;
         std::mt19937 gen;
         bool playing;
-        std::unique_ptr<Score> score;
-        std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> collect;
-        std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> hit;
-        std::unique_ptr<Mix_Music, decltype(&Mix_FreeMusic)> music;
-        bool muted;
-        std::unique_ptr<Fps> fps;
 };
 
 #endif

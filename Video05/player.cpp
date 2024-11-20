@@ -5,7 +5,7 @@ Player::Player(std::shared_ptr<SDL_Renderer> renderer)
     : renderer{renderer},
       image{nullptr, SDL_DestroyTexture},
       y{374},
-      speed{300},
+      speed{5},
       top_offset{16},
       left_offset{47},
       right_offset{43},
@@ -29,22 +29,19 @@ void Player::init() {
 
     this->rect.y = this->y;
     this->rect.x = (Game::width - this->rect.w) / 2;
-    this->x_pos = this->rect.x;
     this->keystate = SDL_GetKeyboardState(nullptr);
 }
 
-void Player::update(double dt) {
+void Player::update() {
     if (this->keystate[SDL_SCANCODE_LEFT]) {
-        this->x_pos -= this->speed * dt;
-        this->rect.x = (int)this->x_pos;
+        this->rect.x -= this->speed;
         if (this->left() < 0) {
             this->set_left(0);
         }
         this->flip = SDL_FLIP_HORIZONTAL;
     }
     if (this->keystate[SDL_SCANCODE_RIGHT]) {
-        this->x_pos += this->speed * dt;
-        this->rect.x = (int)this->x_pos;
+        this->rect.x += this->speed;
         if (this->right() > 800) {
             this->set_right(800);
         }

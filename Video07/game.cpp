@@ -10,24 +10,11 @@ Game::Game()
       yellow{nullptr, SDL_DestroyTexture},
       rd{},
       gen{rd()},
-      playing{true},
-      collect{nullptr, Mix_FreeChunk},
-      hit{nullptr, Mix_FreeChunk},
-      music{nullptr, Mix_FreeMusic},
-      muted{false} {}
+      playing{true} {}
 
 Game::~Game() {
-    Mix_HaltMusic();
-    Mix_HaltChannel(-1);
-
-    this->collect.reset();
-    this->hit.reset();
-    this->music.reset();
-
-    this->score.reset();
     this->flakes.clear();
     this->player.reset();
-    this->fps.reset();
 
     this->yellow.reset();
     this->white.reset();
@@ -36,9 +23,6 @@ Game::~Game() {
     this->renderer.reset();
     this->window.reset();
 
-    Mix_CloseAudio();
-    Mix_Quit();
-    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 
@@ -61,13 +45,6 @@ void Game::init() {
         flake->init();
         this->flakes.emplace_back(std::move(flake));
     }
-
-    this->score.reset(new Score(this->renderer));
-    this->score->init();
-
-    this->fps.reset(new Fps(60));
-
-    Mix_PlayMusic(this->music.get(), -1);
 }
 
 void Game::collision(std::unique_ptr<Flake> &flake) {
@@ -76,11 +53,7 @@ void Game::collision(std::unique_ptr<Flake> &flake) {
         flake->left() < this->player->right()) {
         if (flake->is_white()) {
             flake->reset(false);
-            this->score->increment();
-            Mix_PlayChannel(-1, this->collect.get(), 0);
         } else {
-            Mix_HaltMusic();
-            Mix_PlayChannel(-1, this->hit.get(), 0);
             this->playing = false;
         }
     }
@@ -92,26 +65,6 @@ void Game::reset() {
         for (auto &flake : this->flakes) {
             flake->reset(true);
         }
-        this->score->reset();
-        if (!this->muted) {
-            Mix_PlayMusic(this->music.get(), -1);
-        }
-    }
-}
-
-void Game::toggle_mute() {
-    if (this->muted) {
-        this->muted = false;
-        if (Mix_PlayingMusic()) {
-            Mix_ResumeMusic();
-        } else {
-            if (this->playing) {
-                Mix_PlayMusic(this->music.get(), -1);
-            }
-        }
-    } else {
-        this->muted = true;
-        Mix_PauseMusic();
     }
 }
 
@@ -129,12 +82,6 @@ void Game::events() {
             case SDL_SCANCODE_SPACE:
                 this->reset();
                 break;
-            case SDL_SCANCODE_M:
-                this->toggle_mute();
-                break;
-            case SDL_SCANCODE_F:
-                this->fps->toggle_fps();
-                break;
             default:
                 break;
             }
@@ -144,10 +91,10 @@ void Game::events() {
 
 void Game::update() {
     if (this->playing) {
-        this->player->update(this->fps->dt);
+        this->player->update();
 
         for (auto &flake : this->flakes) {
-            flake->update(this->fps->dt);
+            flake->update();
             this->collision(flake);
         }
     }
@@ -162,11 +109,10 @@ void Game::draw() {
     for (auto &flake : this->flakes) {
         flake->draw();
     }
-    this->score->draw();
 
     SDL_RenderPresent(this->renderer.get());
 
-    this->fps->update();
+    SDL_Delay(16);
 }
 
 void Game::run() {

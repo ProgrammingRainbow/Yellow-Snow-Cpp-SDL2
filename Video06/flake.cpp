@@ -6,7 +6,7 @@ Flake::Flake(std::shared_ptr<SDL_Renderer> renderer,
     : renderer{renderer},
       image{image},
       white{white},
-      speed{300},
+      speed{5},
       ground{550},
       gen{gen} {}
 
@@ -21,6 +21,13 @@ void Flake::init() {
     this->reset(true);
 }
 
+void Flake::update() {
+    this->rect.y += this->speed;
+    if (this->bottom() > this->ground) {
+        this->reset(false);
+    }
+}
+
 void Flake::reset(bool full) {
     std::uniform_int_distribution<int> randx(0, (Game::width - this->rect.w));
 
@@ -29,15 +36,6 @@ void Flake::reset(bool full) {
 
     this->rect.x = randx(this->gen);
     this->rect.y = -randy(this->gen) - this->rect.h;
-    this->y_pos = this->rect.y;
-}
-
-void Flake::update(double dt) {
-    this->y_pos += this->speed * dt;
-    this->rect.y = (int)this->y_pos;
-    if (this->bottom() > this->ground) {
-        this->reset(false);
-    }
 }
 
 void Flake::draw() {

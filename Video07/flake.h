@@ -11,7 +11,7 @@ class Flake {
 
         void init();
         void reset(bool full);
-        void update(double dt);
+        void update();
         void draw();
 
         inline int left() const { return this->rect.x; }
@@ -24,10 +24,9 @@ class Flake {
         std::shared_ptr<SDL_Texture> image;
         SDL_Rect rect;
         bool white;
-        double speed;
+        const unsigned int speed;
         const int ground;
         std::mt19937 &gen;
-        double y_pos;
 };
 
 #endif

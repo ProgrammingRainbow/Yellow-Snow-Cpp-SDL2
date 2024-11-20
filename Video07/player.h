@@ -8,7 +8,7 @@ class Player {
         Player(std::shared_ptr<SDL_Renderer> renderer);
 
         void init();
-        void update(double dt);
+        void update();
         void draw();
 
         inline int left() const { return this->rect.x + this->left_offset; }
@@ -18,11 +18,9 @@ class Player {
         inline int top() const { return this->rect.y + this->top_offset; }
         inline void set_left(int left) {
             this->rect.x = left - this->left_offset;
-            this->x_pos = this->rect.x;
         }
         inline void set_right(int right) {
             this->rect.x = right - this->rect.w + this->right_offset;
-            this->x_pos = this->rect.x;
         }
 
     private:
@@ -31,12 +29,11 @@ class Player {
         SDL_Rect rect;
         const unsigned int y;
         const Uint8 *keystate;
-        const double speed;
+        const unsigned int speed;
         const int top_offset;
         const int left_offset;
         const int right_offset;
         SDL_RendererFlip flip;
-        double x_pos;
 };
 
 #endif
