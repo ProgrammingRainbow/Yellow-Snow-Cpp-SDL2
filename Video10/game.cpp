@@ -9,7 +9,7 @@ Game::Game()
       yellow{nullptr, SDL_DestroyTexture},
       rd{},
       gen{rd()},
-      playing{true},
+      paused{false},
       collect{nullptr, Mix_FreeChunk},
       hit{nullptr, Mix_FreeChunk},
       music{nullptr, Mix_FreeMusic},
@@ -80,14 +80,14 @@ void Game::collision(std::unique_ptr<Flake> &flake) {
         } else {
             Mix_HaltMusic();
             Mix_PlayChannel(-1, this->hit.get(), 0);
-            this->playing = false;
+            this->paused = true;
         }
     }
 }
 
 void Game::reset() {
-    if (!this->playing) {
-        this->playing = true;
+    if (this->paused) {
+        this->paused = false;
         for (auto &flake : this->flakes) {
             flake->reset(true);
         }
@@ -104,7 +104,7 @@ void Game::toggle_mute() {
         if (Mix_PlayingMusic()) {
             Mix_ResumeMusic();
         } else {
-            if (this->playing) {
+            if (!this->paused) {
                 Mix_PlayMusic(this->music.get(), -1);
             }
         }
@@ -144,7 +144,7 @@ void Game::events() {
 }
 
 void Game::update() {
-    if (this->playing) {
+    if (!this->paused) {
         this->player->update(this->fps->dt);
 
         for (auto &flake : this->flakes) {

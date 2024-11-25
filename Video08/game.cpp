@@ -9,7 +9,7 @@ Game::Game()
       yellow{nullptr, SDL_DestroyTexture},
       rd{},
       gen{rd()},
-      playing{true} {}
+      paused{false} {}
 
 Game::~Game() {
     this->score.reset();
@@ -59,14 +59,14 @@ void Game::collision(std::unique_ptr<Flake> &flake) {
             flake->reset(false);
             this->score->increment();
         } else {
-            this->playing = false;
+            this->paused = true;
         }
     }
 }
 
 void Game::reset() {
-    if (!this->playing) {
-        this->playing = true;
+    if (this->paused) {
+        this->paused = false;
         for (auto &flake : this->flakes) {
             flake->reset(true);
         }
@@ -98,7 +98,7 @@ void Game::events() {
 }
 
 void Game::update() {
-    if (this->playing) {
+    if (!this->paused) {
         this->player->update();
 
         for (auto &flake : this->flakes) {

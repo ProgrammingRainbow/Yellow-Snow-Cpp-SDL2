@@ -36,7 +36,7 @@ class Game {
         std::vector<std::unique_ptr<Flake>> flakes;
         std::random_device rd;
         std::mt19937 gen;
-        bool playing;
+        bool paused;
         std::unique_ptr<Score> score;
         std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> collect;
         std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> hit;
