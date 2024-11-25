@@ -2,11 +2,10 @@
 #define FPS_H
 
 #include "main.h"
-#include <chrono>
 
 class Fps {
     public:
-        Fps(double target_fps);
+        Fps();
 
         void update();
         void toggle_fps();

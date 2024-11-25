@@ -1,9 +1,8 @@
 #include "fps.h"
-#include <thread>
 
-Fps::Fps(double target_fps)
+Fps::Fps()
     : dt{0},
-      target_duration{1000.0 / target_fps},
+      target_duration{1000.0 / TARGET_FPS},
       max_duration{50.0},
       last_time{std::chrono::steady_clock::now()},
       carry_delay{0},
@@ -19,7 +18,6 @@ void Fps::toggle_fps() {
         this->enable_fps = true;
         this->frames = 0;
         this->last_fps = std::chrono::steady_clock::now();
-        this->carry_delay = std::chrono::duration<double, std::milli>(0.0);
     }
 }
 

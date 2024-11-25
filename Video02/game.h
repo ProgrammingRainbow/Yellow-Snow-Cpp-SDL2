@@ -11,16 +11,13 @@ class Game {
         void init_sdl();
         void run();
 
-        static constexpr int width{800};
-        static constexpr int height{600};
-
     private:
         void events();
         void draw();
 
-        const std::string title;
         std::shared_ptr<SDL_Window> window;
         std::shared_ptr<SDL_Renderer> renderer;
+        SDL_Event event;
         bool running;
 };
 
