@@ -31,7 +31,6 @@ class Player {
         SDL_Rect rect;
         const unsigned int y;
         const Uint8 *keystate;
-        const double speed;
         const int top_offset;
         const int left_offset;
         const int right_offset;

@@ -6,11 +6,10 @@ Score::Score(std::shared_ptr<SDL_Renderer> renderer)
       surface{nullptr, SDL_FreeSurface},
       image{nullptr, SDL_DestroyTexture},
       rect{10, 10, 0, 0},
-      color{255, 255, 255, 255},
       score{0} {}
 
 void Score::init() {
-    this->font.reset(TTF_OpenFont("fonts/freesansbold.ttf", 24));
+    this->font.reset(TTF_OpenFont("fonts/freesansbold.ttf", FONT_SIZE));
     if (!this->font) {
         auto error = fmt::format("Error creating font: {}", TTF_GetError());
         throw std::runtime_error(error);
@@ -33,8 +32,8 @@ void Score::update() {
 
     std::string score_text{"Score: " + std::to_string(this->score)};
 
-    this->surface.reset(TTF_RenderText_Blended(
-        this->font.get(), score_text.c_str(), this->color));
+    this->surface.reset(TTF_RenderText_Blended(this->font.get(),
+                                               score_text.c_str(), FONT_COLOR));
     if (!this->surface) {
         auto error =
             fmt::format("Error creating a surface: {}", SDL_GetError());

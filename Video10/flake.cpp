@@ -1,12 +1,10 @@
 #include "flake.h"
-#include "game.h"
 
 Flake::Flake(std::shared_ptr<SDL_Renderer> renderer,
              std::shared_ptr<SDL_Texture> image, bool white, std::mt19937 &gen)
     : renderer{renderer},
       image{image},
       white{white},
-      speed{300},
       ground{550},
       gen{gen} {}
 
@@ -22,9 +20,9 @@ void Flake::init() {
 }
 
 void Flake::reset(bool full) {
-    std::uniform_int_distribution<int> randx(0, (Game::width - this->rect.w));
+    std::uniform_int_distribution<int> randx(0, (WINDOW_WIDTH - this->rect.w));
 
-    int height = full ? Game::height * 2 : Game::height;
+    int height = full ? WINDOW_HEIGHT * 2 : WINDOW_HEIGHT;
     std::uniform_int_distribution<int> randy(0, height);
 
     this->rect.x = randx(this->gen);
@@ -33,7 +31,7 @@ void Flake::reset(bool full) {
 }
 
 void Flake::update(double dt) {
-    this->y_pos += this->speed * dt;
+    this->y_pos += FLAKE_SPEED * dt;
     this->rect.y = (int)this->y_pos;
     if (this->bottom() > this->ground) {
         this->reset(false);

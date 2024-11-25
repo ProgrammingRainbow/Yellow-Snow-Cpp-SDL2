@@ -24,7 +24,6 @@ class Flake {
         std::shared_ptr<SDL_Texture> image;
         SDL_Rect rect;
         bool white;
-        const unsigned int speed;
         const int ground;
         std::mt19937 &gen;
 };

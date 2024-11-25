@@ -20,7 +20,6 @@ class Score {
         std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface;
         std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> image;
         SDL_Rect rect;
-        SDL_Color color;
         unsigned int score;
 };
 

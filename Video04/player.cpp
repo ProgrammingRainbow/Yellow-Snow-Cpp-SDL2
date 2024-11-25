@@ -1,5 +1,4 @@
 #include "player.h"
-#include "game.h"
 
 Player::Player(std::shared_ptr<SDL_Renderer> renderer)
     : renderer{renderer},
@@ -23,7 +22,7 @@ void Player::init() {
     }
 
     this->rect.y = this->y;
-    this->rect.x = (Game::width - this->rect.w) / 2;
+    this->rect.x = (WINDOW_WIDTH - this->rect.w) / 2;
 }
 
 void Player::draw() {

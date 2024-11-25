@@ -1,8 +1,7 @@
 #include "game.h"
 
 Game::Game()
-    : title{"Don't Eat the Yellow Snow!"},
-      window{nullptr, SDL_DestroyWindow},
+    : window{nullptr, SDL_DestroyWindow},
       renderer{nullptr, SDL_DestroyRenderer},
       running{true},
       background{nullptr, SDL_DestroyTexture},
@@ -113,13 +112,13 @@ void Game::toggle_mute() {
 }
 
 void Game::events() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
+    while (SDL_PollEvent(&this->event)) {
+        switch (this->event.type) {
+        case SDL_QUIT:
             this->running = false;
             return;
-        } else if (event.type == SDL_KEYDOWN) {
-            switch (event.key.keysym.scancode) {
+        case SDL_KEYDOWN:
+            switch (this->event.key.keysym.scancode) {
             case SDL_SCANCODE_ESCAPE:
                 this->running = false;
                 return;
@@ -132,6 +131,8 @@ void Game::events() {
             default:
                 break;
             }
+        default:
+            break;
         }
     }
 }

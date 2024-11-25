@@ -1,12 +1,12 @@
 #include "init_sdl.h"
 
 void Game::init_sdl() {
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+    if (SDL_Init(SDL_FLAGS) != 0) {
         auto error = fmt::format("Error initializing SDL: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
 
-    if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG) {
+    if ((IMG_Init(IMG_FLAGS) & IMG_FLAGS) != IMG_FLAGS) {
         auto error =
             fmt::format("Error initializing SDL_image: {}", IMG_GetError());
         throw std::runtime_error(error);
@@ -25,16 +25,15 @@ void Game::init_sdl() {
     }
 
     if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-                      MIX_DEFAULT_CHANNELS, 1024) < 0) {
+                      MIX_DEFAULT_CHANNELS, CHUNK_SIZE) < 0) {
         auto error =
             fmt::format("Error initializing SDL_mixer: {}", Mix_GetError());
         throw std::runtime_error(error);
     }
 
-    this->window.reset(SDL_CreateWindow(this->title.c_str(),
-                                        SDL_WINDOWPOS_UNDEFINED,
-                                        SDL_WINDOWPOS_UNDEFINED, this->width,
-                                        this->height, SDL_WINDOW_SHOWN),
+    this->window.reset(SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED,
+                                        SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
+                                        WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
                        SDL_DestroyWindow);
     if (!this->window) {
         auto error = fmt::format("Error creating window: {}", SDL_GetError());

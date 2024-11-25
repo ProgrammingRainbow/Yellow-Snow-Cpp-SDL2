@@ -18,9 +18,6 @@ class Game {
         void reset();
         void run();
 
-        static constexpr int width{800};
-        static constexpr int height{600};
-
     private:
         void collision(std::unique_ptr<Flake> &flake);
         void toggle_mute();
@@ -28,9 +25,9 @@ class Game {
         void update();
         void draw();
 
-        const std::string title;
         std::shared_ptr<SDL_Window> window;
         std::shared_ptr<SDL_Renderer> renderer;
+        SDL_Event event;
         bool running;
         std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> background;
         std::shared_ptr<SDL_Texture> white;
