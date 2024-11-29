@@ -14,7 +14,7 @@ class Player {
         std::shared_ptr<SDL_Renderer> renderer;
         std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> image;
         SDL_Rect rect;
-        const unsigned int y;
+        /*const unsigned int y;*/
 };
 
 #endif

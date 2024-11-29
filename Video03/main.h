@@ -7,7 +7,7 @@
 #include <iostream>
 #include <memory>
 
-constexpr int SDL_FLAGS = (SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+constexpr Uint32 SDL_FLAGS = SDL_INIT_EVERYTHING;
 constexpr int IMG_FLAGS = IMG_INIT_PNG;
 constexpr char WINDOW_TITLE[] = "Don't Eat the Yellow Snow!";
 constexpr int WINDOW_WIDTH = 800;

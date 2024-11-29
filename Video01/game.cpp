@@ -10,7 +10,7 @@ Game::~Game() {
 
     SDL_Quit();
 
-    std::cout << "all clean!" << std::endl;
+    std::cout << "all clean!" << '\n';
 }
 
 void Game::run() {

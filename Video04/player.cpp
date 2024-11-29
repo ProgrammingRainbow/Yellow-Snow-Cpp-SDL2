@@ -3,7 +3,7 @@
 Player::Player(std::shared_ptr<SDL_Renderer> renderer)
     : renderer{renderer},
       image{nullptr, SDL_DestroyTexture},
-      y{374} {}
+      rect{0, 374, 0, 0} {}
 
 void Player::init() {
     this->image.reset(
@@ -21,7 +21,7 @@ void Player::init() {
         throw std::runtime_error(error);
     }
 
-    this->rect.y = this->y;
+    /*this->rect.y = this->y;*/
     this->rect.x = (WINDOW_WIDTH - this->rect.w) / 2;
 }
 

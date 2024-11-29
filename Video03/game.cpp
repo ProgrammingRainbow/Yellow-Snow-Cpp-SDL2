@@ -15,7 +15,7 @@ Game::~Game() {
     IMG_Quit();
     SDL_Quit();
 
-    std::cout << "all clean!" << std::endl;
+    std::cout << "all clean!" << '\n';
 }
 
 void Game::events() {
@@ -43,9 +43,8 @@ void Game::draw() {
 
     SDL_RenderCopy(this->renderer.get(), this->background.get(), nullptr,
                    nullptr);
-    SDL_RenderPresent(this->renderer.get());
 
-    SDL_Delay(16);
+    SDL_RenderPresent(this->renderer.get());
 }
 
 void Game::run() {
@@ -53,5 +52,7 @@ void Game::run() {
         this->events();
 
         this->draw();
+
+        SDL_Delay(16);
     }
 }
