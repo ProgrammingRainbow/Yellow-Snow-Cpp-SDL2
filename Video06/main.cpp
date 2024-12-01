@@ -1,6 +1,6 @@
 #include "game.h"
 
-int main() {
+int main(void) {
     try {
         Game game;
         game.init_sdl();
@@ -8,8 +8,9 @@ int main() {
         game.init();
         game.run();
     } catch (const std::runtime_error &e) {
-        std::cerr << "Error: " << e.what() << '\n';
+        std::cerr << e.what() << '\n';
         return 1;
     }
+
     return 0;
 }

@@ -1,5 +1,4 @@
 #include "player.h"
-#include "main.h"
 
 Player::Player(std::shared_ptr<SDL_Renderer> renderer)
     : renderer{renderer},

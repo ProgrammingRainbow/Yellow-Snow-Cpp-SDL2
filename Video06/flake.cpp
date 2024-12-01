@@ -1,39 +1,22 @@
 #include "flake.h"
 
 Flake::Flake(std::shared_ptr<SDL_Renderer> renderer,
-             std::shared_ptr<SDL_Texture> image, bool white, std::mt19937 &gen)
+             std::shared_ptr<SDL_Texture> image, SDL_Rect rect, bool is_white,
+             std::mt19937 &gen)
     : renderer{renderer},
       image{image},
-      white{white},
-      ground{550},
+      rect{rect},
+      is_white{is_white},
       gen{gen} {}
 
-void Flake::init() {
-    if (SDL_QueryTexture(this->image.get(), nullptr, nullptr, &this->rect.w,
-                         &this->rect.h)) {
-        auto error =
-            fmt::format("Error while querying texture: {}", SDL_GetError());
-        throw std::runtime_error(error);
-    }
-
-    this->reset(true);
-}
-
-void Flake::update() {
-    this->rect.y += FLAKE_SPEED;
-    if (this->bottom() > this->ground) {
-        this->reset(false);
-    }
-}
-
-void Flake::reset(bool full) {
+void Flake::reset(bool is_full) {
+    (void)is_full;
     std::uniform_int_distribution<int> randx(0, (WINDOW_WIDTH - this->rect.w));
 
-    int height = full ? WINDOW_HEIGHT * 2 : WINDOW_HEIGHT;
-    std::uniform_int_distribution<int> randy(0, height);
+    std::uniform_int_distribution<int> randy(0, (WINDOW_HEIGHT - this->rect.y));
 
     this->rect.x = randx(this->gen);
-    this->rect.y = -randy(this->gen) - this->rect.h;
+    this->rect.y = randy(this->gen);
 }
 
 void Flake::draw() {

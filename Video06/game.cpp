@@ -5,8 +5,10 @@ Game::Game()
       renderer{nullptr, SDL_DestroyRenderer},
       running{true},
       background{nullptr, SDL_DestroyTexture},
-      white{nullptr, SDL_DestroyTexture},
-      yellow{nullptr, SDL_DestroyTexture},
+      white_image{nullptr, SDL_DestroyTexture},
+      yellow_image{nullptr, SDL_DestroyTexture},
+      white_rect{0, 0, 0, 0},
+      yellow_rect{0, 0, 0, 0},
       rd{},
       gen{rd()} {}
 
@@ -14,8 +16,6 @@ Game::~Game() {
     this->flakes.clear();
     this->player.reset();
 
-    this->yellow.reset();
-    this->white.reset();
     this->background.reset();
 
     this->renderer.reset();
@@ -24,7 +24,7 @@ Game::~Game() {
     IMG_Quit();
     SDL_Quit();
 
-    std::cout << "all clean!" << std::endl;
+    std::cout << "all clean!" << '\n';
 }
 
 void Game::init() {
@@ -32,15 +32,17 @@ void Game::init() {
     this->player->init();
 
     for (int i = 0; i < 10; i++) {
-        auto flake = std::make_unique<Flake>(this->renderer, this->white, true,
-                                             this->gen);
-        flake->init();
+        auto flake = std::make_unique<Flake>(this->renderer, this->white_image,
+                                             this->white_rect, true, this->gen);
+        flake->reset(true);
         this->flakes.emplace_back(std::move(flake));
     }
+
     for (int i = 0; i < 5; i++) {
-        auto flake = std::make_unique<Flake>(this->renderer, this->yellow,
-                                             false, this->gen);
-        flake->init();
+        auto flake =
+            std::make_unique<Flake>(this->renderer, this->yellow_image,
+                                    this->yellow_rect, false, this->gen);
+        flake->reset(true);
         this->flakes.emplace_back(std::move(flake));
     }
 }
@@ -65,13 +67,7 @@ void Game::events() {
     }
 }
 
-void Game::update() {
-    this->player->update();
-
-    for (auto &flake : this->flakes) {
-        flake->update();
-    }
-}
+void Game::update() { this->player->update(); }
 
 void Game::draw() {
     SDL_RenderClear(this->renderer.get());
@@ -84,8 +80,6 @@ void Game::draw() {
     }
 
     SDL_RenderPresent(this->renderer.get());
-
-    SDL_Delay(16);
 }
 
 void Game::run() {
@@ -95,5 +89,7 @@ void Game::run() {
         this->update();
 
         this->draw();
+
+        SDL_Delay(16);
     }
 }
