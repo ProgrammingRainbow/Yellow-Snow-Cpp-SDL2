@@ -19,7 +19,7 @@ class Game {
         void update();
         void draw();
 
-        std::shared_ptr<SDL_Window> window;
+        std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window;
         std::shared_ptr<SDL_Renderer> renderer;
         SDL_Event event;
         bool running;
