@@ -12,6 +12,15 @@ git clone https://github.com/ProgrammingRainbow/Yellow-Snow-Cpp-SDL2
 cd Yellow-Snow-Cpp-SDL2
 make run
 ```
+The Makefile also supports these commands:
+```
+make rebuild
+make clean
+make release
+make debug
+SRC_DIR=Video8 make rebuild run
+CXX=clang++ make clean release run
+```
 # Controls
 Left Arrow - Moves left.\
 Right Arrow - Moves right.\
