@@ -1,23 +1,12 @@
 #include "game.h"
 
-Game::Game()
-    : window{nullptr, SDL_DestroyWindow},
-      renderer{nullptr, SDL_DestroyRenderer},
-      running{true},
-      background{nullptr, SDL_DestroyTexture},
-      white{nullptr, SDL_DestroyTexture},
-      yellow{nullptr, SDL_DestroyTexture},
-      rd{},
-      gen{rd()},
-      paused{false} {}
-
 Game::~Game() {
     this->score.reset();
     this->flakes.clear();
     this->player.reset();
 
-    this->yellow.reset();
-    this->white.reset();
+    this->yellow_image.reset();
+    this->white_image.reset();
     this->background.reset();
 
     this->renderer.reset();
@@ -31,18 +20,22 @@ Game::~Game() {
 }
 
 void Game::init() {
+    this->initSdl();
+    this->loadMedia();
+
     this->player.reset(new Player(this->renderer));
     this->player->init();
 
     for (int i = 0; i < 10; i++) {
-        auto flake = std::make_unique<Flake>(this->renderer, this->white, true,
-                                             this->gen);
+        auto flake = std::make_unique<Flake>(this->renderer, this->white_image,
+                                             this->white_rect, true, this->gen);
         flake->init();
         this->flakes.emplace_back(std::move(flake));
     }
     for (int i = 0; i < 5; i++) {
-        auto flake = std::make_unique<Flake>(this->renderer, this->yellow,
-                                             false, this->gen);
+        auto flake =
+            std::make_unique<Flake>(this->renderer, this->yellow_image,
+                                    this->yellow_rect, false, this->gen);
         flake->init();
         this->flakes.emplace_back(std::move(flake));
     }
@@ -55,7 +48,7 @@ void Game::collision(std::unique_ptr<Flake> &flake) {
     if (flake->bottom() > this->player->top() &&
         flake->right() > this->player->left() &&
         flake->left() < this->player->right()) {
-        if (flake->is_white()) {
+        if (flake->isWhite()) {
             flake->reset(false);
             this->score->increment();
         } else {
@@ -91,6 +84,7 @@ void Game::events() {
             default:
                 break;
             }
+            break;
         default:
             break;
         }

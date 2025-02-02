@@ -7,29 +7,43 @@
 
 class Game {
     public:
-        Game();
+        Game()
+            : window{nullptr, SDL_DestroyWindow},
+              renderer{nullptr, SDL_DestroyRenderer},
+              running{true},
+              background{nullptr, SDL_DestroyTexture},
+              white_image{nullptr, SDL_DestroyTexture},
+              yellow_image{nullptr, SDL_DestroyTexture},
+              white_rect{0, 0, 0, 0},
+              yellow_rect{0, 0, 0, 0},
+              rd{},
+              gen{rd()},
+              paused{false} {}
+
         ~Game();
 
-        void init_sdl();
-        void load_media();
         void init();
-        void reset();
         void run();
 
     private:
+        void initSdl();
+        void loadMedia();
         void collision(std::unique_ptr<Flake> &flake);
+        void reset();
         void events();
         void update();
         void draw();
 
-        std::shared_ptr<SDL_Window> window;
+        std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window;
         std::shared_ptr<SDL_Renderer> renderer;
         SDL_Event event;
         bool running;
         std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> background;
-        std::shared_ptr<SDL_Texture> white;
-        std::shared_ptr<SDL_Texture> yellow;
         std::unique_ptr<Player> player;
+        std::shared_ptr<SDL_Texture> white_image;
+        std::shared_ptr<SDL_Texture> yellow_image;
+        SDL_Rect white_rect;
+        SDL_Rect yellow_rect;
         std::vector<std::unique_ptr<Flake>> flakes;
         std::random_device rd;
         std::mt19937 gen;

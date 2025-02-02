@@ -5,7 +5,13 @@
 
 class Score {
     public:
-        Score(std::shared_ptr<SDL_Renderer> renderer);
+        Score(std::shared_ptr<SDL_Renderer> new_renderer)
+            : renderer{new_renderer},
+              font{nullptr, TTF_CloseFont},
+              surface{nullptr, SDL_FreeSurface},
+              image{nullptr, SDL_DestroyTexture},
+              rect{10, 10, 0, 0},
+              score{0} {}
 
         void init();
         void increment();
