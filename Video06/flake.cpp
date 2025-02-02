@@ -1,14 +1,5 @@
 #include "flake.h"
 
-Flake::Flake(std::shared_ptr<SDL_Renderer> renderer,
-             std::shared_ptr<SDL_Texture> image, SDL_Rect rect, bool is_white,
-             std::mt19937 &gen)
-    : renderer{renderer},
-      image{image},
-      rect{rect},
-      is_white{is_white},
-      gen{gen} {}
-
 void Flake::reset(bool is_full) {
     (void)is_full;
     std::uniform_int_distribution<int> randx(0, (WINDOW_WIDTH - this->rect.w));

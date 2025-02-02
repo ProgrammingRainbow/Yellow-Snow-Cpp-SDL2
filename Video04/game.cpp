@@ -1,11 +1,5 @@
 #include "game.h"
 
-Game::Game()
-    : window{nullptr, SDL_DestroyWindow},
-      renderer{nullptr, SDL_DestroyRenderer},
-      running{true},
-      background{nullptr, SDL_DestroyTexture} {}
-
 Game::~Game() {
     this->player.reset();
 
@@ -21,6 +15,9 @@ Game::~Game() {
 }
 
 void Game::init() {
+    this->initSdl();
+    this->loadMedia();
+
     this->player.reset(new Player(this->renderer));
     this->player->init();
 }
@@ -39,6 +36,7 @@ void Game::events() {
             default:
                 break;
             }
+            break;
         default:
             break;
         }

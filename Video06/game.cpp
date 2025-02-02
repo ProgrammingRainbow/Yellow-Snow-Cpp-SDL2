@@ -1,17 +1,5 @@
 #include "game.h"
 
-Game::Game()
-    : window{nullptr, SDL_DestroyWindow},
-      renderer{nullptr, SDL_DestroyRenderer},
-      running{true},
-      background{nullptr, SDL_DestroyTexture},
-      white_image{nullptr, SDL_DestroyTexture},
-      yellow_image{nullptr, SDL_DestroyTexture},
-      white_rect{0, 0, 0, 0},
-      yellow_rect{0, 0, 0, 0},
-      rd{},
-      gen{rd()} {}
-
 Game::~Game() {
     this->flakes.clear();
     this->player.reset();
@@ -28,6 +16,9 @@ Game::~Game() {
 }
 
 void Game::init() {
+    this->initSdl();
+    this->loadMedia();
+
     this->player.reset(new Player(this->renderer));
     this->player->init();
 
@@ -61,6 +52,7 @@ void Game::events() {
             default:
                 break;
             }
+            break;
         default:
             break;
         }

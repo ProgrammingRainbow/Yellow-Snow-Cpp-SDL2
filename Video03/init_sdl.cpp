@@ -1,14 +1,14 @@
 #include "init_sdl.h"
 
-void Game::init_sdl() {
+void Game::initSdl() {
     if (SDL_Init(SDL_FLAGS) != 0) {
-        auto error = fmt::format("Error initializing SDL2: {}", SDL_GetError());
+        auto error = std::format("Error initializing SDL2: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
 
     if ((IMG_Init(IMG_FLAGS) & IMG_FLAGS) != IMG_FLAGS) {
         auto error =
-            fmt::format("Error initializing SDL_image: {}", IMG_GetError());
+            std::format("Error initializing SDL_image: {}", IMG_GetError());
         throw std::runtime_error(error);
     }
 
@@ -16,7 +16,7 @@ void Game::init_sdl() {
                                         SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH,
                                         WINDOW_HEIGHT, 0));
     if (!this->window) {
-        auto error = fmt::format("Error creating Window: {}", SDL_GetError());
+        auto error = std::format("Error creating Window: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
 
@@ -24,7 +24,7 @@ void Game::init_sdl() {
         SDL_CreateRenderer(this->window.get(), -1, SDL_RENDERER_ACCELERATED),
         SDL_DestroyRenderer);
     if (!this->renderer) {
-        auto error = fmt::format("Error creating Renderer: {}", SDL_GetError());
+        auto error = std::format("Error creating Renderer: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
 }

@@ -1,11 +1,5 @@
 #include "game.h"
 
-Game::Game()
-    : window{nullptr, SDL_DestroyWindow},
-      renderer{nullptr, SDL_DestroyRenderer},
-      running{true},
-      background{nullptr, SDL_DestroyTexture} {}
-
 Game::~Game() {
     this->background.reset();
 
@@ -16,6 +10,11 @@ Game::~Game() {
     SDL_Quit();
 
     std::cout << "all clean!" << '\n';
+}
+
+void Game::init() {
+    this->initSdl();
+    this->loadMedia();
 }
 
 void Game::events() {
@@ -32,6 +31,7 @@ void Game::events() {
             default:
                 break;
             }
+            break;
         default:
             break;
         }

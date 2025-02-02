@@ -1,10 +1,5 @@
 #include "game.h"
 
-Game::Game()
-    : window{nullptr, SDL_DestroyWindow},
-      renderer{nullptr, SDL_DestroyRenderer},
-      running{true} {}
-
 Game::~Game() {
     this->renderer.reset();
     this->window.reset();
@@ -13,6 +8,8 @@ Game::~Game() {
 
     std::cout << "all clean!" << '\n';
 }
+
+void Game::init() { this->initSdl(); }
 
 void Game::events() {
     while (SDL_PollEvent(&this->event)) {
@@ -28,6 +25,7 @@ void Game::events() {
             default:
                 break;
             }
+            break;
         default:
             break;
         }

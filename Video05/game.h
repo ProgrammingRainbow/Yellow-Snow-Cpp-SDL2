@@ -6,15 +6,20 @@
 
 class Game {
     public:
-        Game();
+        Game()
+            : window{nullptr, SDL_DestroyWindow},
+              renderer{nullptr, SDL_DestroyRenderer},
+              running{true},
+              background{nullptr, SDL_DestroyTexture} {}
+
         ~Game();
 
-        void init_sdl();
-        void load_media();
         void init();
         void run();
 
     private:
+        void initSdl();
+        void loadMedia();
         void events();
         void update();
         void draw();

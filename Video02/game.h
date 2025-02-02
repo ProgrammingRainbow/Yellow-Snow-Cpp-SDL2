@@ -5,13 +5,18 @@
 
 class Game {
     public:
-        Game();
+        Game()
+            : window{nullptr, SDL_DestroyWindow},
+              renderer{nullptr, SDL_DestroyRenderer},
+              running{true} {}
+
         ~Game();
 
-        void init_sdl();
+        void init();
         void run();
 
     private:
+        void initSdl();
         void events();
         void draw();
 

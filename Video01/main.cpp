@@ -3,7 +3,7 @@
 int main(void) {
     try {
         Game game;
-        game.init_sdl();
+        game.initSdl();
         game.run();
     } catch (const std::runtime_error &e) {
         std::cerr << e.what() << '\n';

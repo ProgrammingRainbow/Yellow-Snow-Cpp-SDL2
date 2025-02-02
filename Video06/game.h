@@ -7,15 +7,26 @@
 
 class Game {
     public:
-        Game();
+        Game()
+            : window{nullptr, SDL_DestroyWindow},
+              renderer{nullptr, SDL_DestroyRenderer},
+              running{true},
+              background{nullptr, SDL_DestroyTexture},
+              white_image{nullptr, SDL_DestroyTexture},
+              yellow_image{nullptr, SDL_DestroyTexture},
+              white_rect{0, 0, 0, 0},
+              yellow_rect{0, 0, 0, 0},
+              rd{},
+              gen{rd()} {}
+
         ~Game();
 
-        void init_sdl();
-        void load_media();
         void init();
         void run();
 
     private:
+        void initSdl();
+        void loadMedia();
         void events();
         void update();
         void draw();

@@ -1,9 +1,5 @@
 #include "game.h"
 
-Game::Game()
-    : window{nullptr, SDL_DestroyWindow},
-      renderer{nullptr, SDL_DestroyRenderer} {}
-
 Game::~Game() {
     this->renderer.reset();
     this->window.reset();
