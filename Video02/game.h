@@ -8,7 +8,9 @@ class Game {
         Game()
             : window{nullptr, SDL_DestroyWindow},
               renderer{nullptr, SDL_DestroyRenderer},
-              running{true} {}
+              event{},
+              running{true},
+              background{nullptr, SDL_DestroyTexture} {}
 
         ~Game();
 
@@ -17,13 +19,15 @@ class Game {
 
     private:
         void initSdl();
+        void loadMedia();
         void events();
-        void draw();
+        void draw() const;
 
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window;
         std::shared_ptr<SDL_Renderer> renderer;
         SDL_Event event;
         bool running;
+        std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> background;
 };
 
 #endif

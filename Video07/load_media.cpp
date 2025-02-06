@@ -17,7 +17,7 @@ void Game::loadMedia() {
     }
 
     if (SDL_QueryTexture(this->white_image.get(), nullptr, nullptr,
-                         &this->white_rect.w, &this->white_rect.h) != 0) {
+                         &this->white_rect.w, &this->white_rect.h)) {
         auto error = std::format("Error querying Texture: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
@@ -31,7 +31,7 @@ void Game::loadMedia() {
     }
 
     if (SDL_QueryTexture(this->yellow_image.get(), nullptr, nullptr,
-                         &this->yellow_rect.w, &this->yellow_rect.h) != 0) {
+                         &this->yellow_rect.w, &this->yellow_rect.h)) {
         auto error = std::format("Error querying Texture: {}", SDL_GetError());
         throw std::runtime_error(error);
     }

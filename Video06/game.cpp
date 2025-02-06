@@ -4,6 +4,8 @@ Game::~Game() {
     this->flakes.clear();
     this->player.reset();
 
+    this->yellow_image.reset();
+    this->white_image.reset();
     this->background.reset();
 
     this->renderer.reset();
@@ -22,18 +24,20 @@ void Game::init() {
     this->player.reset(new Player(this->renderer));
     this->player->init();
 
+    // white flakes
     for (int i = 0; i < 10; i++) {
         auto flake = std::make_unique<Flake>(this->renderer, this->white_image,
                                              this->white_rect, true, this->gen);
-        flake->reset(true);
+        flake->reset();
         this->flakes.emplace_back(std::move(flake));
     }
 
+    // yellow flakes
     for (int i = 0; i < 5; i++) {
         auto flake =
             std::make_unique<Flake>(this->renderer, this->yellow_image,
                                     this->yellow_rect, false, this->gen);
-        flake->reset(true);
+        flake->reset();
         this->flakes.emplace_back(std::move(flake));
     }
 }
@@ -61,7 +65,7 @@ void Game::events() {
 
 void Game::update() { this->player->update(); }
 
-void Game::draw() {
+void Game::draw() const {
     SDL_RenderClear(this->renderer.get());
 
     SDL_RenderCopy(this->renderer.get(), this->background.get(), nullptr,

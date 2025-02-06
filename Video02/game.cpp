@@ -4,6 +4,7 @@ Game::~Game() {
     this->renderer.reset();
     this->window.reset();
 
+    IMG_Quit();
     SDL_Quit();
 
     std::cout << "all clean!" << '\n';
@@ -32,7 +33,7 @@ void Game::events() {
     }
 }
 
-void Game::draw() {
+void Game::draw() const {
     SDL_RenderClear(this->renderer.get());
 
     SDL_RenderPresent(this->renderer.get());

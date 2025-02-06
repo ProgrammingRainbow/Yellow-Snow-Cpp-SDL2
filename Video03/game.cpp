@@ -38,7 +38,7 @@ void Game::events() {
     }
 }
 
-void Game::draw() {
+void Game::draw() const {
     SDL_RenderClear(this->renderer.get());
 
     SDL_RenderCopy(this->renderer.get(), this->background.get(), nullptr,

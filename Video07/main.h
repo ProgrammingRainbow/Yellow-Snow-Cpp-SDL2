@@ -13,12 +13,13 @@ constexpr int IMG_FLAGS = IMG_INIT_PNG;
 
 constexpr char WINDOW_TITLE[] = "Don't Eat the Yellow Snow!";
 constexpr int WINDOW_WIDTH = 800;
+
 constexpr int WINDOW_HEIGHT = 600;
 
 constexpr int PLAYER_Y = 376;
+constexpr int PLAYER_LEFT_OFFSET = 45;
+constexpr int PLAYER_RIGHT_OFFSET = 45;
 constexpr int PLAYER_TOP_OFFSET = 16;
-constexpr int PLAYER_LEFT_OFFSET = 47;
-constexpr int PLAYER_RIGHT_OFFSET = 43;
 constexpr int PLAYER_VEL = 5;
 
 constexpr int GROUND = 550;

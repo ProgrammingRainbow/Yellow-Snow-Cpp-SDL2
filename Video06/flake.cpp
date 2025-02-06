@@ -1,16 +1,15 @@
 #include "flake.h"
 
-void Flake::reset(bool is_full) {
-    (void)is_full;
-    std::uniform_int_distribution<int> randx(0, (WINDOW_WIDTH - this->rect.w));
+void Flake::reset() {
+    std::uniform_int_distribution<int> randX(0, WINDOW_WIDTH - this->rect.w);
 
-    std::uniform_int_distribution<int> randy(0, (WINDOW_HEIGHT - this->rect.y));
+    std::uniform_int_distribution<int> randY(0, WINDOW_HEIGHT - this->rect.h);
 
-    this->rect.x = randx(this->gen);
-    this->rect.y = randy(this->gen);
+    this->rect.x = randX(this->gen);
+    this->rect.y = randY(this->gen);
 }
 
-void Flake::draw() {
+void Flake::draw() const {
     SDL_RenderCopy(this->renderer.get(), this->image.get(), nullptr,
                    &this->rect);
 }

@@ -11,7 +11,7 @@ class Player {
               rect{0, PLAYER_Y, 0, 0} {}
 
         void init();
-        void draw();
+        void draw() const;
 
     private:
         std::shared_ptr<SDL_Renderer> renderer;

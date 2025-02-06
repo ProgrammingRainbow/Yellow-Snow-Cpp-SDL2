@@ -1,4 +1,5 @@
 #include "game.h"
+#include <memory>
 
 Game::~Game() {
     this->flakes.clear();
@@ -14,7 +15,7 @@ Game::~Game() {
     IMG_Quit();
     SDL_Quit();
 
-    std::cout << "all clean!" << std::endl;
+    std::cout << "all clean!" << '\n';
 }
 
 void Game::init() {
@@ -24,12 +25,15 @@ void Game::init() {
     this->player.reset(new Player(this->renderer));
     this->player->init();
 
+    // white flakes
     for (int i = 0; i < 10; i++) {
         auto flake = std::make_unique<Flake>(this->renderer, this->white_image,
                                              this->white_rect, true, this->gen);
         flake->init();
         this->flakes.emplace_back(std::move(flake));
     }
+
+    // yellow flakes
     for (int i = 0; i < 5; i++) {
         auto flake =
             std::make_unique<Flake>(this->renderer, this->yellow_image,
@@ -46,16 +50,16 @@ void Game::collision(std::unique_ptr<Flake> &flake) {
         if (flake->isWhite()) {
             flake->reset(false);
         } else {
-            this->paused = true;
+            this->is_playing = false;
         }
     }
 }
 
 void Game::reset() {
-    if (this->paused) {
-        this->paused = false;
+    if (!this->is_playing) {
+        this->is_playing = true;
         for (auto &flake : this->flakes) {
-            flake->reset(true);
+            flake->init();
         }
     }
 }
@@ -85,9 +89,8 @@ void Game::events() {
 }
 
 void Game::update() {
-    if (!this->paused) {
+    if (this->is_playing) {
         this->player->update();
-
         for (auto &flake : this->flakes) {
             flake->update();
             this->collision(flake);
@@ -95,7 +98,7 @@ void Game::update() {
     }
 }
 
-void Game::draw() {
+void Game::draw() const {
     SDL_RenderClear(this->renderer.get());
 
     SDL_RenderCopy(this->renderer.get(), this->background.get(), nullptr,
@@ -106,8 +109,6 @@ void Game::draw() {
     }
 
     SDL_RenderPresent(this->renderer.get());
-
-    SDL_Delay(16);
 }
 
 void Game::run() {
@@ -117,5 +118,7 @@ void Game::run() {
         this->update();
 
         this->draw();
+
+        SDL_Delay(16);
     }
 }

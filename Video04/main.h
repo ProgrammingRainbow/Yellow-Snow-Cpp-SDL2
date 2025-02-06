@@ -14,6 +14,6 @@ constexpr char WINDOW_TITLE[] = "Don't Eat the Yellow Snow!";
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
 
-constexpr int PLAYER_Y = 374;
+constexpr int PLAYER_Y = 376;
 
 #endif

@@ -1,4 +1,5 @@
 #include "game.h"
+#include "player.h"
 
 Game::~Game() {
     this->player.reset();
@@ -45,7 +46,7 @@ void Game::events() {
 
 void Game::update() { this->player->update(); }
 
-void Game::draw() {
+void Game::draw() const {
     SDL_RenderClear(this->renderer.get());
 
     SDL_RenderCopy(this->renderer.get(), this->background.get(), nullptr,

@@ -14,9 +14,9 @@ class Flake {
               is_white{new_is_white},
               gen{new_gen} {}
 
-        void reset(bool is_full);
+        void reset();
         void update();
-        void draw();
+        void draw() const;
 
     private:
         std::shared_ptr<SDL_Renderer> renderer;

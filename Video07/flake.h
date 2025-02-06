@@ -14,10 +14,10 @@ class Flake {
               is_white{new_is_white},
               gen{new_gen} {}
 
-        void init();
         void reset(bool is_full);
+        inline void init() { this->reset(true); }
         void update();
-        void draw();
+        void draw() const;
 
         inline int left() const { return this->rect.x; }
         inline int right() const { return this->rect.x + this->rect.w; }
