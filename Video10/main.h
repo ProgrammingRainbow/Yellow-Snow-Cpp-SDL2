@@ -32,6 +32,6 @@ constexpr SDL_Color FONT_COLOR = {255, 255, 255, 255};
 
 constexpr int CHUNK_SIZE = 1024;
 
-constexpr double TARGET_FPS = 60;
+constexpr int TARGET_FPS = 60;
 
 #endif

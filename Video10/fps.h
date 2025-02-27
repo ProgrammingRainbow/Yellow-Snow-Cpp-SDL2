@@ -6,10 +6,11 @@
 class Fps {
     public:
         Fps()
-            : target_duration{1000.0 / TARGET_FPS},
-              max_duration{50.0},
+            : target_duration{std::chrono::nanoseconds(1000000000) /
+                              TARGET_FPS},
+              max_duration{std::chrono::milliseconds(50)},
               last_time{std::chrono::steady_clock::now()},
-              carry_delay{0},
+              carry_delay{},
               first_elapsed{},
               second_elapsed{},
               last_fps{std::chrono::steady_clock::now()},
@@ -25,12 +26,12 @@ class Fps {
     private:
         void showFps();
 
-        const std::chrono::duration<double, std::milli> target_duration;
-        const std::chrono::duration<double, std::milli> max_duration;
+        const std::chrono::steady_clock::duration target_duration;
+        const std::chrono::steady_clock::duration max_duration;
         std::chrono::time_point<std::chrono::steady_clock> last_time;
-        std::chrono::duration<double, std::milli> carry_delay;
-        std::chrono::duration<double, std::milli> first_elapsed;
-        std::chrono::duration<double, std::milli> second_elapsed;
+        std::chrono::steady_clock::duration carry_delay;
+        std::chrono::steady_clock::duration first_elapsed;
+        std::chrono::steady_clock::duration second_elapsed;
         std::chrono::time_point<std::chrono::steady_clock> last_fps;
         const std::chrono::steady_clock::duration fps_duration;
         double dt;

@@ -16,7 +16,7 @@ class Score {
         void init();
         void increment();
         void reset();
-        void draw();
+        void draw() const;
 
     private:
         void update();

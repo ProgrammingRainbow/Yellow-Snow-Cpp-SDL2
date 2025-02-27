@@ -4,9 +4,9 @@ Game::~Game() {
     Mix_HaltMusic();
     Mix_HaltChannel(-1);
 
-    this->collect.reset();
-    this->hit.reset();
     this->music.reset();
+    this->hit.reset();
+    this->collect.reset();
 
     this->score.reset();
     this->flakes.clear();
@@ -20,12 +20,13 @@ Game::~Game() {
     this->window.reset();
 
     Mix_CloseAudio();
+
     Mix_Quit();
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 
-    std::cout << "all clean!" << std::endl;
+    std::cout << "all clean!" << '\n';
 }
 
 void Game::init() {
@@ -35,12 +36,15 @@ void Game::init() {
     this->player.reset(new Player(this->renderer));
     this->player->init();
 
+    // white flakes
     for (int i = 0; i < 10; i++) {
         auto flake = std::make_unique<Flake>(this->renderer, this->white_image,
                                              this->white_rect, true, this->gen);
         flake->init();
         this->flakes.emplace_back(std::move(flake));
     }
+
+    // yellow flakes
     for (int i = 0; i < 5; i++) {
         auto flake =
             std::make_unique<Flake>(this->renderer, this->yellow_image,
@@ -53,7 +57,7 @@ void Game::init() {
     this->score->init();
 
     if (Mix_PlayMusic(this->music.get(), -1)) {
-        auto error = std::format("Error playing music: {}", Mix_GetError());
+        auto error = std::format("Error playing Music: {}", Mix_GetError());
         throw std::runtime_error(error);
     }
 }
@@ -69,20 +73,25 @@ void Game::collision(std::unique_ptr<Flake> &flake) {
         } else {
             Mix_HaltMusic();
             Mix_PlayChannel(-1, this->hit.get(), 0);
-            this->paused = true;
+            this->is_playing = false;
         }
     }
 }
 
 void Game::reset() {
-    if (this->paused) {
-        this->paused = false;
+    if (!this->is_playing) {
+        this->is_playing = true;
         for (auto &flake : this->flakes) {
-            flake->reset(true);
+            flake->init();
         }
         this->score->reset();
+
         if (!this->muted) {
-            Mix_PlayMusic(this->music.get(), -1);
+            if (Mix_PlayMusic(this->music.get(), -1)) {
+                auto error =
+                    std::format("Error playing Music: {}", Mix_GetError());
+                throw std::runtime_error(error);
+            }
         }
     }
 }
@@ -93,8 +102,12 @@ void Game::toggleMute() {
         if (Mix_PlayingMusic()) {
             Mix_ResumeMusic();
         } else {
-            if (!this->paused) {
-                Mix_PlayMusic(this->music.get(), -1);
+            if (this->is_playing) {
+                if (Mix_PlayMusic(this->music.get(), -1)) {
+                    auto error =
+                        std::format("Error playing Music: {}", Mix_GetError());
+                    throw std::runtime_error(error);
+                }
             }
         }
     } else {
@@ -131,9 +144,8 @@ void Game::events() {
 }
 
 void Game::update() {
-    if (!this->paused) {
+    if (this->is_playing) {
         this->player->update();
-
         for (auto &flake : this->flakes) {
             flake->update();
             this->collision(flake);
@@ -141,7 +153,7 @@ void Game::update() {
     }
 }
 
-void Game::draw() {
+void Game::draw() const {
     SDL_RenderClear(this->renderer.get());
 
     SDL_RenderCopy(this->renderer.get(), this->background.get(), nullptr,
@@ -153,8 +165,6 @@ void Game::draw() {
     this->score->draw();
 
     SDL_RenderPresent(this->renderer.get());
-
-    SDL_Delay(16);
 }
 
 void Game::run() {
@@ -164,5 +174,7 @@ void Game::run() {
         this->update();
 
         this->draw();
+
+        SDL_Delay(16);
     }
 }

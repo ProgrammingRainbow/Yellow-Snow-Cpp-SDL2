@@ -25,8 +25,8 @@ void Fps::showFps() {
 void Fps::update() {
     auto current_time = std::chrono::steady_clock::now();
     this->first_elapsed = current_time - this->last_time;
-    auto sleep_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        this->target_duration - this->first_elapsed + this->carry_delay);
+    auto sleep_duration =
+        this->target_duration - this->first_elapsed + this->carry_delay;
 
     if (sleep_duration.count() > 0) {
         std::this_thread::sleep_for(sleep_duration);
@@ -35,7 +35,8 @@ void Fps::update() {
     current_time = std::chrono::steady_clock::now();
     this->second_elapsed = current_time - this->last_time;
 
-    this->dt = this->second_elapsed.count() / 1000;
+    this->dt = std::chrono::duration<double>(this->second_elapsed) /
+               std::chrono::seconds(1);
 
     this->carry_delay =
         this->target_duration - this->second_elapsed + this->carry_delay;
