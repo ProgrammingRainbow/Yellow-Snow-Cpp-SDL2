@@ -9,6 +9,7 @@
 #include <iostream>
 #include <memory>
 #include <random>
+#include <chrono>
 #include <thread>
 
 constexpr Uint32 SDL_FLAGS = SDL_INIT_EVERYTHING;
