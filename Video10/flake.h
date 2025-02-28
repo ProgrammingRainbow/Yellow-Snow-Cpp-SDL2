@@ -15,10 +15,10 @@ class Flake {
               gen{new_gen},
               pos_y{} {}
 
-        void init();
         void reset(bool is_full);
+        inline void init() { this->reset(true); }
         void update(double dt);
-        void draw();
+        void draw() const;
 
         inline int left() const { return this->rect.x; }
         inline int right() const { return this->rect.x + this->rect.w; }

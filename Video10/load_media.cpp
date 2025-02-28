@@ -17,7 +17,7 @@ void Game::loadMedia() {
     }
 
     if (SDL_QueryTexture(this->white_image.get(), nullptr, nullptr,
-                         &this->white_rect.w, &this->white_rect.h) != 0) {
+                         &this->white_rect.w, &this->white_rect.h)) {
         auto error = std::format("Error querying Texture: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
@@ -31,28 +31,26 @@ void Game::loadMedia() {
     }
 
     if (SDL_QueryTexture(this->yellow_image.get(), nullptr, nullptr,
-                         &this->yellow_rect.w, &this->yellow_rect.h) != 0) {
+                         &this->yellow_rect.w, &this->yellow_rect.h)) {
         auto error = std::format("Error querying Texture: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
 
     this->collect.reset(Mix_LoadWAV("sounds/collect.ogg"));
     if (!this->collect) {
-        auto error =
-            std::format("Failed to load sound effect: {}", Mix_GetError());
+        auto error = std::format("Error loading Chunk: {}", Mix_GetError());
         throw std::runtime_error(error);
     }
 
     this->hit.reset(Mix_LoadWAV("sounds/hit.ogg"));
     if (!this->hit) {
-        auto error =
-            std::format("Failed to load sound effect: {}", Mix_GetError());
+        auto error = std::format("Error loading Chunk: {}", Mix_GetError());
         throw std::runtime_error(error);
     }
 
     this->music.reset(Mix_LoadMUS("music/winter_loop.ogg"));
     if (!this->music) {
-        auto error = std::format("Failed to load music: {}", Mix_GetError());
+        auto error = std::format("Error loading Music: {}", Mix_GetError());
         throw std::runtime_error(error);
     }
 }

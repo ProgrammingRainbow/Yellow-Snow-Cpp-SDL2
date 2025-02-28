@@ -9,7 +9,7 @@ void Player::init() {
     }
 
     if (SDL_QueryTexture(this->image.get(), nullptr, nullptr, &this->rect.w,
-                         &this->rect.h) != 0) {
+                         &this->rect.h)) {
         auto error = std::format("Error querying Texture: {}", SDL_GetError());
         throw std::runtime_error(error);
     }
@@ -20,7 +20,7 @@ void Player::init() {
 }
 
 void Player::update(double dt) {
-    if (this->keystate[SDL_SCANCODE_LEFT]) {
+    if (this->keystate[SDL_SCANCODE_LEFT] || this->keystate[SDL_SCANCODE_A]) {
         this->pos_x -= PLAYER_VEL * dt;
         this->rect.x = (int)this->pos_x;
         if (this->left() < 0) {
@@ -28,7 +28,7 @@ void Player::update(double dt) {
         }
         this->flip = SDL_FLIP_HORIZONTAL;
     }
-    if (this->keystate[SDL_SCANCODE_RIGHT]) {
+    if (this->keystate[SDL_SCANCODE_RIGHT] || this->keystate[SDL_SCANCODE_D]) {
         this->pos_x += PLAYER_VEL * dt;
         this->rect.x = (int)this->pos_x;
         if (this->right() > WINDOW_WIDTH) {
@@ -38,7 +38,7 @@ void Player::update(double dt) {
     }
 }
 
-void Player::draw() {
+void Player::draw() const {
     SDL_RenderCopyEx(this->renderer.get(), this->image.get(), nullptr,
                      &this->rect, 0, nullptr, this->flip);
 }

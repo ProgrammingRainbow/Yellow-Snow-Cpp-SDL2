@@ -8,12 +8,12 @@ class Fps {
         Fps()
             : target_duration{std::chrono::nanoseconds(1000000000) /
                               TARGET_FPS},
-              max_duration{std::chrono::milliseconds(50)},
+              max_carry{std::chrono::milliseconds(50)},
               last_time{std::chrono::steady_clock::now()},
-              carry_delay{},
+              carry_duration{},
               last_fps{std::chrono::steady_clock::now()},
-              dt{0},
-              frames{0},
+              dt{},
+              frames{},
               enable_fps{false} {}
 
         void update();
@@ -24,9 +24,9 @@ class Fps {
         void showFps();
 
         const std::chrono::steady_clock::duration target_duration;
-        const std::chrono::steady_clock::duration max_duration;
+        const std::chrono::steady_clock::duration max_carry;
         std::chrono::time_point<std::chrono::steady_clock> last_time;
-        std::chrono::steady_clock::duration carry_delay;
+        std::chrono::steady_clock::duration carry_duration;
         std::chrono::time_point<std::chrono::steady_clock> last_fps;
         double dt;
         unsigned int frames;

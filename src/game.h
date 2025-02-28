@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "flake.h"
 #include "main.h"
 #include "player.h"
+#include "flake.h"
 #include "score.h"
 #include "fps.h"
 
@@ -12,19 +12,18 @@ class Game {
         Game()
             : window{nullptr, SDL_DestroyWindow},
               renderer{nullptr, SDL_DestroyRenderer},
+              event{},
               running{true},
               background{nullptr, SDL_DestroyTexture},
-              white_image{nullptr, SDL_DestroyTexture},
-              yellow_image{nullptr, SDL_DestroyTexture},
-              white_rect{0, 0, 0, 0},
-              yellow_rect{0, 0, 0, 0},
+              player{nullptr},
               rd{},
               gen{rd()},
-              paused{false},
+              is_playing{true},
               collect{nullptr, Mix_FreeChunk},
               hit{nullptr, Mix_FreeChunk},
               music{nullptr, Mix_FreeMusic},
-              muted{false} {}
+              muted{false},
+              fps{nullptr} {}
 
         ~Game();
 
@@ -39,7 +38,7 @@ class Game {
         void toggleMute();
         void events();
         void update();
-        void draw();
+        void draw() const;
 
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window;
         std::shared_ptr<SDL_Renderer> renderer;
@@ -54,7 +53,7 @@ class Game {
         std::vector<std::unique_ptr<Flake>> flakes;
         std::random_device rd;
         std::mt19937 gen;
-        bool paused;
+        bool is_playing;
         std::unique_ptr<Score> score;
         std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> collect;
         std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> hit;

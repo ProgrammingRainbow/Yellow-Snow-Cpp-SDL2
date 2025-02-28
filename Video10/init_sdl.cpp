@@ -12,22 +12,21 @@ void Game::initSdl() {
         throw std::runtime_error(error);
     }
 
-    if (TTF_Init()) {
+    if (TTF_Init() != 0) {
         auto error =
             std::format("Error initializing SDL_ttf: {}", TTF_GetError());
         throw std::runtime_error(error);
     }
 
-    if ((Mix_Init(MIX_INIT_OGG) & MIX_INIT_OGG) != MIX_INIT_OGG) {
+    if ((Mix_Init(MIX_FLAGS) & MIX_FLAGS) != MIX_FLAGS) {
         auto error =
             std::format("Error initializing SDL_mixer: {}", Mix_GetError());
         throw std::runtime_error(error);
     }
 
     if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-                      MIX_DEFAULT_CHANNELS, CHUNK_SIZE) < 0) {
-        auto error =
-            std::format("Error initializing SDL_mixer: {}", Mix_GetError());
+                      MIX_DEFAULT_CHANNELS, CHUNK_SIZE) != 0) {
+        auto error = std::format("Error Opening Audio: {}", Mix_GetError());
         throw std::runtime_error(error);
     }
 
@@ -50,9 +49,8 @@ void Game::initSdl() {
     std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> icon_surf{
         IMG_Load("images/yellow.png"), SDL_FreeSurface};
     if (!icon_surf) {
-        auto error = std::format("Error loading Surface: {}", IMG_GetError());
+        auto error = std::format("Error creating Surface: {}", IMG_GetError());
         throw std::runtime_error(error);
     }
-
     SDL_SetWindowIcon(this->window.get(), icon_surf.get());
 }
